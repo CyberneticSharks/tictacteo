@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Tic Tac Toe</title>
+<style>
+    body {
+        font-family: Arial, sans-serif;
+        text-align: center;
+        display:flex; flex-direction:column; justify-content:center;
+        min-height:100vh;
+    }
+    #board {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 3px;
+        margin: 20px auto;
+        width: 300px;
+        height: 300px;
+        background-color: #333;
+    }
+    .cell {
+        width: 100px;
+        height: 100px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        font-size: 2em;
+        color: #000000;
+        background-color: #ffffff;
+        cursor: pointer;
+    }
+    #reset{
+        border-radius: 25px;
+        width: 90px;
+        height: 30px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        font-size: 1em;
+        color:#ffffff;
+        background-color: #6c6969;
+        cursor: pointer;
+    }
+</style>
+</head>
+<body>
+<h1>Tic Tac Toe</h1>
+<div id="board">
+    <div class="cell" onclick="makeMove(0)"></div>
+    <div class="cell" onclick="makeMove(1)"></div>
+    <div class="cell" onclick="makeMove(2)"></div>
+    <div class="cell" onclick="makeMove(3)"></div>
+    <div class="cell" onclick="makeMove(4)"></div>
+    <div class="cell" onclick="makeMove(5)"></div>
+    <div class="cell" onclick="makeMove(6)"></div>
+    <div class="cell" onclick="makeMove(7)"></div>
+    <div class="cell" onclick="makeMove(8)"></div>
+    <div id="winner"></div>
+    <div id="reset" onclick="resetBoard()">RESET</div>
+</div>
+
+<script>
+    let currentPlayer = "X";
+    let board = ['', '', '', '', '', '', '', '', ''];
+
+    function makeMove(index) {
+        if (board[index] === '') {
+            board[index] = currentPlayer;
+            document.getElementsByClassName("cell")[index].innerText = currentPlayer;
+            if (checkWin()) {
+                h1(currentPlayer + " wins!");
+            } else if (board.every(cell => cell !== '')) {
+                h1("It's a draw!");
+            } else {
+                currentPlayer = currentPlayer === 'X' ? 'O' : 'X';
+            }
+        }
+    }
+    function checkWin() {
+        const winConditions = [
+            [0, 1, 2], [3, 4, 5], [6, 7, 8], [0, 3, 6],
+            [1, 4, 7], [2, 5, 8], [0, 4, 8], [2, 4, 6]
+        ];
+        return winConditions.some(condition => {
+            return condition.every(index => board[index] === currentPlayer);
+        });
+    }
+    function h1(text) {
+        var h2 = document.createElement('h2');
+        h2.appendChild(document.createTextNode(text));
+        document.body.appendChild(h2);
+    }
+    function resetBoard() {
+        board = ['', '', '', '', '', '', '', '', ''];
+        document.querySelectorAll('.cell').forEach(cell => cell.innerText = '');
+        currentPlayer = 'X';
+        var h1Element = document.querySelector('h2');
+        if (h1Element) {
+            h1Element.parentNode.removeChild(h1Element);
+        } else {
+            console.log("No h2 element found to remove.");
+        }
+    }
+</script>
+</body>
+</html>
